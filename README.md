@@ -1,5 +1,14 @@
 # vue-cropperjs
 
+七牛云图片上传
+
+主要使用技术： vue + vue-router + axios + cropper + element-ui
+
+
+- 使用七牛云图片上传使用base64方式
+- 使用formData方式上传并支持图片的裁剪
+
+
 ## Project setup
 ```
 npm install

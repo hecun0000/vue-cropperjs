@@ -1,29 +1,51 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="tabs">
+      <el-button-group>
+        <el-button
+          v-for="(item,index) in tabsData"
+          :key="index.link"
+          :type="active==item.link?'primary':''"
+          @click="toggleUploadType(item.link)"
+        >{{item.text}}</el-button>
+      </el-button-group>
     </div>
-    <router-view/>
+
+    <router-view></router-view>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  name: "app",
+  data() {
+    return {
+      active: "common",
+      tabsData: [
+        {
+          link: "common",
+          text: "普通上传"
+        },
+        {
+          link: "cropper",
+          text: "裁剪上传"
+        }
+      ]
+    };
+  },
+  methods: {
+    toggleUploadType(link) {
+      this.active = link;
+      this.$router.push(link);
     }
   }
+};
+</script>
+<style lang="less" scoped>
+.tabs {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
