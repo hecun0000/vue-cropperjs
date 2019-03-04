@@ -1,0 +1,2 @@
+export const SETPTOKEN = 'SETPTOKEN'
+export const SETFILELIST = 'SETFILELIST'

@@ -12,7 +12,7 @@ console.log(store);
 
 
 let config = {
-  baseURL:store.state.requestUrl,
+  baseURL:store.getters.getRequestUrl,
   timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
   headers: {
@@ -25,7 +25,7 @@ const _axios = axios.create(config);
 _axios.interceptors.request.use(
   function (config) {
     if(config.source=='qiniu'){
-        config.baseURL = store.state.qiNiuUrl
+        config.baseURL = store.getters.getQiNiuUrl
     }
     // Do something before request is sent
     return config;

@@ -19,16 +19,16 @@ export function qiniuUpload(keyname,data) {
         data,
         headers: {
             'Content-Type': 'application/octet-stream',
-            'Authorization':'UpToken ' + store.state.upToken
+            'Authorization': 'UpToken ' + store.getters.getUpToken
         }
     })
 }
 
 
 // 使用formData上传
-export function uploadImg({token,key,file}) {
+export function uploadImg({key,file}) {
     let data = new FormData();
-    data.append('token',token);
+    data.append('token', store.getters.getUpToken);
     data.append('key',key);
     data.append('file',file);
     return axios.post('https://upload.qiniup.com', data,).then(res => res.data)

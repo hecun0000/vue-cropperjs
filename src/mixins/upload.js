@@ -1,3 +1,5 @@
+import tailor from "@/components/tailor";
+import {mapActions} from "vuex";
 
 export default  {
     data() {
@@ -10,7 +12,11 @@ export default  {
             },
         };
     },
+    components: {
+        tailor,
+    },
     methods: {
+         ...mapActions([ "setFileList"]),
         //获取本地连接
         getObjectURL(file) {
             let url = null;
@@ -34,6 +40,7 @@ export default  {
         getImgPath(url){
             this.item = true;
             this.imageUrl = url
+            this.setFileList(url);
 
         },
     }

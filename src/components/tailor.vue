@@ -19,31 +19,32 @@
           <span class="btn-item btn-reset" title="重置" @click="reset"></span>
           <!--裁剪质量-->
           <!-- 圆形裁剪 -->
-          <!--<span class="btn-item" @click="circle">圆形</span>-->
+          <span class="btn-item" @click="circle">圆形</span>
         </div>
         <div class="picture-quality">
-          <!--<span class="label">-->
-          <!--压缩等级：-->
-          <!--</span>-->
-          <!--<el-select class="select-quality" v-model="imgQuality" @change="changeQuality" placeholder="请选择"-->
-          <!--size="small">-->
-          <!--<el-option label="高" value="1"></el-option>-->
-          <!--<el-option label="中" value="0.5"></el-option>-->
-          <!--<el-option label="低" value="0.1"></el-option>-->
-          <!--</el-select>-->
-          <!--<template v-if="fsize && limit != 0">-->
-          <!--<span class="label">-->
-          <!--图片大小：-->
-          <!--</span>-->
-          <!--<span class="content">-->
-          <!--{{fsize | alterFileSize}}-->
-          <!--</span>-->
-          <!--</template>-->
+          <span class="label">压缩等级：</span>
+          <el-select
+            class="select-quality"
+            v-model="imgQuality"
+            @change="changeQuality"
+            placeholder="请选择"
+            size="small"
+          >
+            <el-option label="高" value="1"></el-option>
+            <el-option label="中" value="0.5"></el-option>
+            <el-option label="低" value="0.1"></el-option>
+          </el-select>
+          <template v-if="fsize && limit != 0">
+            <span class="label">
+              <!--图片大小：-->
+            </span>
+            <span class="content">{{fsize | alterFileSize}}</span>
+          </template>
         </div>
       </div>
 
-      <!--链接地址{{// imageUrl}}-->
-      <!--图片大小{{fsize}}-->
+      <!-- 链接地址{{// imageUrl}} -->
+      <!-- 图片大小{{fsize}} -->
       <div class="todo-box">
         <el-button type="primary" size="small" @click="toUpload">确定</el-button>
       </div>
@@ -145,18 +146,17 @@ export default {
 
       let form;
 
+      let { token } = await getToken();
 
-  let {token} = await getToken();
-    
-      this.$store.dispatch('setPtoken',token);
+      this.$store.dispatch("setPtoken", token);
 
-      form = { key:this.$store.state.upToken, token, file };
+      form = { key, file };
 
       let res = await uploadImg(form);
 
       Loading.service({}).close();
       this.$message.success("图片上传成功");
-      this.imageUrl = this.$store.state.domain + res.key;
+      this.imageUrl = this.$store.getters.getDomain + res.key;
     },
     //初始化这个裁剪框
     init() {
@@ -291,10 +291,7 @@ export default {
 };
 </script>
 
-<style>
-.upload {
-}
-
+ <style scoped>
 .preview {
   display: flex;
   height: 400px;
@@ -389,7 +386,7 @@ export default {
   background-image: url("../assets/reset.png");
 }
 
-.circle {
+.upload >>> .circle {
   border-radius: 50% !important;
 }
 
