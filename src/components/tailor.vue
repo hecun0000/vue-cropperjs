@@ -7,7 +7,7 @@
         </div>
         <div class="show">
           <span class="span-title">裁剪预览</span>
-          <div class="show-1 img-preview" :class="{'circle': isCircle}"></div>
+          <div class="show-1 img-preview" :class="{'circle': beCircle}"></div>
         </div>
       </div>
       <div class="operation-box">
@@ -19,7 +19,7 @@
           <span class="btn-item btn-reset" title="重置" @click="reset"></span>
           <!--裁剪质量-->
           <!-- 圆形裁剪 -->
-          <span class="btn-item" @click="circle">圆形</span>
+          <span class="btn-item" @click="changeCircle">圆形</span>
         </div>
         <div class="picture-quality">
           <span class="label">压缩等级：</span>
@@ -35,9 +35,7 @@
             <el-option label="低" value="0.1"></el-option>
           </el-select>
           <template v-if="fsize && limit != 0">
-            <span class="label">
-              <!--图片大小：-->
-            </span>
+            <span class="label">图片大小：</span>
             <span class="content">{{fsize | alterFileSize}}</span>
           </template>
         </div>
@@ -82,7 +80,7 @@ export default {
     limit: {
       //限制图片大小---为KB单位
       type: Number,
-      default: 0
+      default: 100
     },
     fileUrl: {
       required: true,
@@ -109,6 +107,7 @@ export default {
 
   data() {
     return {
+      beCircle: this.isCircle,
       dialogVisible: false,
       fileList: [],
       imgUrl: "",
@@ -128,6 +127,7 @@ export default {
   },
   filters: {
     alterFileSize(size) {
+      console.log(size);
       return (size / 1024).toFixed(2) + "kb";
     }
   },
@@ -165,17 +165,21 @@ export default {
       let ratio = this.ratio.split("/");
 
       this.cropper = new Cropper(image, {
-        aspectRatio: this.isCircle ? 1 / 1 : ratio[0] / ratio[1], //在默认的时候。可以随意改变裁剪框的大小；我这里的设置的值为 16/9
+        aspectRatio: this.beCircle ? 1 / 1 : ratio[0] / ratio[1], //在默认的时候。可以随意改变裁剪框的大小；我这里的设置的值为 16/9
         viewMode: 1, //视图模式
         autoCropArea: 1,
         background: false, //容器的网格背景。（就是后面的马赛克）
         zoomable: true, //是否允许缩放
         preview: ".img-preview", //预览元素
         // 准备完成执行的函数
-        ready: function() {
+        ready() {
           self.croppable = true;
-          self.circle();
-          // self.changeQuality()
+          self.setCircle();
+          self.changeQuality();
+        },
+        cropend() {
+          console.log("窗口移动了");
+          self.changeQuality();
         }
       });
       //圆形裁剪
@@ -187,17 +191,20 @@ export default {
       if (!this.croppable) {
         return;
       }
+
+      console.log(232131);
       croppedCanvas = this.cropper.getCroppedCanvas({
         imgQuality: "high"
       });
 
       // 圆形
-      croppedCanvas = this.isCircle
+      croppedCanvas = this.beCircle
         ? this.getRoundedCanvas(croppedCanvas)
         : croppedCanvas;
 
       let type = Number(this.imgQuality);
-      let base64Data = croppedCanvas.toDataURL("image/png", type);
+
+      let base64Data = croppedCanvas.toDataURL("image/webp", type);
 
       this.blobData = this.dataURLtoBlob(base64Data);
 
@@ -268,12 +275,17 @@ export default {
       }
     },
     // 圆形裁剪
-    circle() {
-      if (this.isCircle) {
+    setCircle() {
+      if (this.beCircle) {
         document.querySelector(".cropper-face").classList.add("circle");
       } else {
         document.querySelector(".cropper-face").classList.remove("circle");
       }
+    },
+
+    changeCircle() {
+      this.beCircle = !this.beCircle;
+      this.setCircle();
     },
     limitImg(size) {
       if (this.limit === 0) return true;
@@ -324,9 +336,6 @@ export default {
 }
 
 .picture {
-  /* max-width: 100%;
-                    vertical-align: middle; */
-
   position: absolute;
   top: 50%;
   left: 50%;

@@ -1,12 +1,14 @@
 import tailor from "@/components/tailor";
-import {mapActions} from "vuex";
+import {
+    mapActions
+} from "vuex";
 
-export default  {
+export default {
     data() {
         return {
-            fileUrl:'',
-            imageUrl:'',
-            item:'',
+            fileUrl: '',
+            imageUrl: '',
+            item: '',
             uploadDialog: {
                 visible: false
             },
@@ -16,7 +18,7 @@ export default  {
         tailor,
     },
     methods: {
-         ...mapActions([ "setFileList"]),
+        ...mapActions(["setFileList"]),
         //获取本地连接
         getObjectURL(file) {
             let url = null;
@@ -34,14 +36,13 @@ export default  {
         },
         handleChange(file) {
             this.fileUrl = this.getObjectURL(file.raw);
-            this.uploadDialog.visible= true;
+            this.uploadDialog.visible = true;
 
         },
-        getImgPath(url){
+        getImgPath(url) {
             this.item = true;
             this.imageUrl = url
             this.setFileList(url);
-
-        },
+        }
     }
 }

@@ -33,9 +33,16 @@ export default {
       ]
     };
   },
+  watch: {
+    $route: {
+      handler(val) {
+        this.active = val.name;
+      },
+      immediate: true
+    }
+  },
   methods: {
     toggleUploadType(link) {
-      this.active = link;
       this.$router.push(link);
     }
   }
