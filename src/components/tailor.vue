@@ -57,7 +57,6 @@ import Cropper from "cropperjs";
 import { getToken, uploadImg } from "@/api/upload";
 
 import { Loading } from "element-ui";
-import moment from "moment";
 
 export default {
   props: {
@@ -132,20 +131,28 @@ export default {
     }
   },
   methods: {
+    nsToText(ns) {
+      let date = new Date(Number(ns));
+      let y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m = m < 10 ? "0" + m : m;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let minute = date.getMinutes();
+      let second = date.getSeconds();
+      minute = minute < 10 ? "0" + minute : minute;
+      second = second < 10 ? "0" + second : second;
+      return [y + "-" + m + "-" + d + "," + h + "/" + minute + "/" + second];
+    },
     //上传图片
     async upload(file) {
       Loading.service({ fullscreen: true, text: "图片上传中" });
-      let current = moment()
-          .format("YYYYMMDD")
-          .toString(),
-        prefix = moment(file.lastModified)
-          .format("HHmmss")
-          .toString(),
-        suffix = new Date().getTime() + ".png",
-        key = encodeURI(`${current}/${prefix}_${suffix}`);
-
+      let now = Date.now(),
+        formatNs = this.nsToText(now),
+        key = encodeURI(`${formatNs[0]}/${formatNs[1]}_${now}`);
       let form;
-
       let { token } = await getToken();
 
       this.$store.dispatch("setPtoken", token);

@@ -4,7 +4,7 @@
       <el-button-group>
         <el-button
           v-for="(item,index) in tabsData"
-          :key="index.link"
+          :key="index.link" 
           :type="active==item.link?'primary':''"
           @click="toggleUploadType(item.link)"
         >{{item.text}}</el-button>

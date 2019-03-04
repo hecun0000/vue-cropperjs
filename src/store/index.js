@@ -11,6 +11,7 @@ import {
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    strict: true,
     state: {
         requestUrl: 'http://api.hecun.site/',
         qiNiuUrl: "http://upload.qiniup.com/putb64/-1/",
