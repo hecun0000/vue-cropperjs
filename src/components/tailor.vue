@@ -3,7 +3,7 @@
     <el-dialog title="选取图片" :visible.sync="uploadDialog.visible" width="900px">
       <div class="preview">
         <div class="cilp-box">
-          <img id="image" :src="url" alt="picture" :class="{'hidden':!croppable}" class="picture">
+          <img v-show="url" id="image" :src="url" alt="picture" :class="{'hidden':!croppable}" class="picture">
         </div>
         <div class="show">
           <span class="span-title">裁剪预览</span>
@@ -126,7 +126,6 @@ export default {
   },
   filters: {
     alterFileSize(size) {
-      console.log(size);
       return (size / 1024).toFixed(2) + "kb";
     }
   },
@@ -185,7 +184,6 @@ export default {
           self.changeQuality();
         },
         cropend() {
-          console.log("窗口移动了");
           self.changeQuality();
         }
       });
@@ -199,7 +197,6 @@ export default {
         return;
       }
 
-      console.log(232131);
       croppedCanvas = this.cropper.getCroppedCanvas({
         imgQuality: "high"
       });
@@ -363,7 +360,9 @@ export default {
   background-color: #409eff;
   width: 32px;
   height: 32px;
-  /*padding: 8px;*/
+  line-height: 32px;
+  font-size: 12px;
+  text-align: center;
   margin-right: 10px;
   border-radius: 4px;
   color: #fff;

@@ -31,11 +31,7 @@ export default {
   mixins: [upload],
   components: {
     fileListComponent
-  },
-  data() {
-    return {};
-  },
-  methods: {}
+  }
 };
 </script>
 
